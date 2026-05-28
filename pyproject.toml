@@ -1,0 +1,21 @@
+[project]
+name = "color-sensor-calibration"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "sofiadorogova",email = "sofiadorogova73@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "tqdm (>=4.67.3,<5.0.0)",
+    "opencv-python (>=4.13.0.92,<5.0.0.0)",
+    "scipy (<1.17.0)",
+    "matplotlib (>=3.10.9,<4.0.0)",
+    "pandas (<3.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
