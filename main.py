@@ -42,7 +42,7 @@ def train_test_split_pairs(pairs: list[tuple[int, int]], train_size: float = 0.8
     shuffled = pairs.copy()
     random.shuffle(shuffled)
     split_idx = int(len(shuffled) * train_size)
-    return shuffled[:split_idx], shuffled[split_idx:]
+    return shuffled[:split_idx][0], shuffled[split_idx:][0]
 
 
 def eval_model(data: tuple, cst_matrix: np.ndarray):
@@ -188,7 +188,12 @@ if __name__ == "__main__":
     random.seed(args.seed)
 
     all_pairs = get_matched_pairs("dataset_config.json")
-    train_pairs, test_pairs = train_test_split_pairs(all_pairs, args.train_size)
+
+    single_pair = [all_pairs[1]]
+    print(f"Выбрана одна пара для эксперимента: {single_pair}")
+
+    train_pairs = single_pair
+    test_pairs = single_pair
 
     print(f"Обучающая выборка: {len(train_pairs)} пар")
     print(f"Тестовая выборка: {len(test_pairs)} пар")
@@ -204,6 +209,7 @@ if __name__ == "__main__":
         matrix = get_CST(train_src, train_dst, model_name)
         np.save(experiment_folder / f"{model_name}.npy", matrix)
 
+        # Тестируем на той же самой картинке
         angle1, pearson1, angle2, pearson2 = eval_model((test_src, test_dst), matrix)
         data.append(
             {
@@ -217,6 +223,7 @@ if __name__ == "__main__":
 
     numerical_results(data, experiment_folder, len(test_pairs))
 
+    # Визуализируем эту же пару
     sample_src_idx, sample_dst_idx = test_pairs[0]
     print(
         f"Генерация визуализации для тестовой пары: {sample_src_idx:04d} -> {sample_dst_idx:04d} ..."
